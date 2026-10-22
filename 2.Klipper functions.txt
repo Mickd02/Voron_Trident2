@@ -1,0 +1,234 @@
+==================================================
+KLIPPER FUNCTION / COMMAND REFERENCE
+==================================================
+
+
+==================================================
+BASIC CONTROL
+==================================================
+
+FIRMWARE_RESTART
+RESTART
+STATUS
+HELP
+
+
+==================================================
+HOMING / MOVEMENT
+==================================================
+
+G28                         ; Home all axes
+G28 X                       ; Home X only
+G28 Y                       ; Home Y only
+G28 Z                       ; Home Z only
+
+G1 X100 Y100 Z10 F6000     ; Move toolhead
+
+G90                         ; Absolute positioning
+G91                         ; Relative positioning
+
+M82                         ; Absolute extruder mode
+M83                         ; Relative extruder mode
+
+
+==================================================
+TEMPERATURE CONTROL
+==================================================
+
+M104 S220                  ; Set hotend temp, no wait
+M109 S220                  ; Set hotend temp and wait
+
+M140 S60                   ; Set bed temp, no wait
+M190 S60                   ; Set bed temp and wait
+
+TURN_OFF_HEATERS
+
+
+==================================================
+FAN CONTROL
+==================================================
+
+M106 S255                  ; Fan full speed
+M106 S128                  ; Fan 50%
+M107                       ; Fan off
+
+SET_FAN_SPEED FAN=fan SPEED=1.0
+SET_FAN_SPEED FAN=fan SPEED=0
+
+
+==================================================
+BED LEVELING / PROBING
+==================================================
+
+QUAD_GANTRY_LEVEL
+Z_TILT_ADJUST
+
+BED_MESH_CALIBRATE
+BED_MESH_PROFILE SAVE=default
+BED_MESH_PROFILE LOAD=default
+BED_MESH_CLEAR
+
+PROBE_CALIBRATE
+PROBE_ACCURACY
+
+Z_ENDSTOP_CALIBRATE
+
+SCREWS_TILT_CALCULATE
+
+QUERY_PROBE
+QUERY_ENDSTOPS
+
+
+==================================================
+CARTOGRAPHER FUNCTIONS
+==================================================
+
+CARTOGRAPHER_SCAN
+CARTOGRAPHER_SCAN_CALIBRATE
+CARTOGRAPHER_ESTIMATE_BACKLASH
+CARTOGRAPHER_TOUCH
+CARTOGRAPHER_STREAM
+
+Typical workflow:
+
+G28
+QUAD_GANTRY_LEVEL
+G28 Z
+CARTOGRAPHER_SCAN_CALIBRATE
+SAVE_CONFIG
+
+
+==================================================
+EXTRUDER / FILAMENT
+==================================================
+
+G1 E50 F300                ; Extrude 50mm
+G1 E-50 F1200              ; Retract 50mm
+
+LOAD_FILAMENT
+UNLOAD_FILAMENT
+
+
+==================================================
+PID TUNING
+==================================================
+
+PID_CALIBRATE HEATER=extruder TARGET=240
+PID_CALIBRATE HEATER=heater_bed TARGET=100
+
+SAVE_CONFIG
+
+
+==================================================
+INPUT SHAPING / RESONANCE
+==================================================
+
+SHAPER_CALIBRATE
+
+SHAPER_CALIBRATE AXIS=X
+SHAPER_CALIBRATE AXIS=Y
+
+TEST_RESONANCES AXIS=X
+TEST_RESONANCES AXIS=Y
+
+
+==================================================
+PRESSURE ADVANCE
+==================================================
+
+SET_PRESSURE_ADVANCE ADVANCE=0.04
+
+TUNING_TOWER COMMAND=SET_PRESSURE_ADVANCE PARAMETER=ADVANCE START=0 FACTOR=.005
+
+
+==================================================
+STEPPER / MOTOR FUNCTIONS
+==================================================
+
+M18                         ; Disable steppers
+M84                         ; Disable steppers
+
+STEPPER_BUZZ STEPPER=stepper_x
+STEPPER_BUZZ STEPPER=stepper_y
+STEPPER_BUZZ STEPPER=stepper_z
+STEPPER_BUZZ STEPPER=extruder
+
+
+==================================================
+TMC DRIVER DEBUGGING
+==================================================
+
+DUMP_TMC STEPPER=stepper_x
+DUMP_TMC STEPPER=stepper_y
+DUMP_TMC STEPPER=stepper_z
+DUMP_TMC STEPPER=extruder
+
+
+==================================================
+MCU / CANBUS
+==================================================
+
+CANBUS_QUERY
+
+Linux SSH command:
+
+~/klippy-env/bin/python ~/klipper/scripts/canbus_query.py can0
+
+
+==================================================
+COMMON MACROS
+==================================================
+
+PRINT_START
+PRINT_END
+
+PAUSE
+RESUME
+CANCEL_PRINT
+
+PARK
+CLEAN_NOZZLE
+
+LOAD_FILAMENT
+UNLOAD_FILAMENT
+
+
+==================================================
+MOST COMMON VORON 2.4 COMMANDS
+==================================================
+
+G28
+QUAD_GANTRY_LEVEL
+BED_MESH_CALIBRATE
+
+CLEAN_NOZZLE
+
+PID_CALIBRATE HEATER=extruder TARGET=240
+PID_CALIBRATE HEATER=heater_bed TARGET=100
+
+PROBE_ACCURACY
+
+QUERY_ENDSTOPS
+
+SAVE_CONFIG
+
+FIRMWARE_RESTART
+
+
+==================================================
+NOTES
+==================================================
+
+- SAVE_CONFIG writes settings into printer.cfg
+- RESTART reloads config without rebooting MCU
+- FIRMWARE_RESTART fully resets Klipper MCU connection
+- Macros such as CLEAN_NOZZLE or PRINT_START
+  only work if defined in your config files
+- Cartographer commands require the Cartographer
+  Klipper extension installed
+- Some commands may differ depending on printer setup
+
+Something like changing line 17 of purge.cfg to have Y{start_y+rand_y} and adding a line {% rand_y = random.randint(-2,2) %}
+==================================================
+END OF FILE
+==================================================
