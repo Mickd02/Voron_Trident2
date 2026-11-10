@@ -83,9 +83,15 @@ QUERY_ENDSTOPS
 CARTOGRAPHER FUNCTIONS
 ==================================================
 
-CARTOGRAPHER_SCAN
-CARTOGRAPHER_SCAN_CALIBRATE
+SETUP
+##########################################
+CARTOGRAPHER_SCAN_CALIBRATE   
+################### then #########################
+CARTOGRAPHER_TOUCH_CALIBRATE
+############ then ##############################
 CARTOGRAPHER_ESTIMATE_BACKLASH
+###############################################
+CARTOGRAPHER_SCAN
 CARTOGRAPHER_TOUCH
 CARTOGRAPHER_STREAM
 
